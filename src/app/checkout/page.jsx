@@ -1,40 +1,80 @@
-import { servers } from "@/data/packages";
-import Link from "next/link";
-import { notFound } from "next/navigation";
+"use client";
 
-export default function ServerPage({
-  params,
-}) {
-  const server = servers.find(
-    (s) => s.slug === params.slug
-  );
+import { useSearchParams } from "next/navigation";
 
-  if (!server) {
-    return notFound();
-  }
+export default function Checkout() {
+  const search = useSearchParams();
+
+  const product =
+    search.get("diamond") || "";
+
+  const price =
+    search.get("price") || "";
+
+  const sendOrder = () => {
+    const gameId =
+      document.getElementById("gameId").value;
+
+    const serverId =
+      document.getElementById("serverId").value;
+
+    const message = `🔥 AMANNY'S STORE 🔥
+
+MLBB Recharge Order
+
+🎮 User ID: ${gameId}
+
+🖥️ Server ID: ${serverId}
+
+💎 Package: ${product}
+
+💰 Amount: ${price}
+
+Payment Completed ✅
+
+Please check my order.`;
+
+    window.open(
+      `https://wa.me/917629970920?text=${encodeURIComponent(message)}`,
+      "_blank"
+    );
+  };
 
   return (
-    <main className="min-h-screen bg-[#030712] text-white">
+    <main className="p-6 max-w-xl mx-auto">
+      <h1 className="text-3xl font-bold mb-6">
+        Checkout
+      </h1>
 
-      <div className="max-w-7xl mx-auto px-6 py-16">
+      <input
+        id="gameId"
+        placeholder="User ID"
+        className="w-full p-3 mb-4 text-black"
+      />
 
-        <Link
-          href="/"
-          className="text-cyan-400"
-        >
-          ← Back Home
-        </Link>
+      <input
+        id="serverId"
+        placeholder="Server ID"
+        className="w-full p-3 mb-4 text-black"
+      />
 
-        <h1 className="text-5xl font-black mt-6">
-          {server.name}
-        </h1>
+      <div className="mb-4">
+        Package: {product}
+      </div>
 
-        <p className="text-gray-400 mt-3">
-          Select a package
-        </p>
+      <div className="mb-4">
+        Amount: {price}
+      </div>
 
-        <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-5 mt-10">
-
+      <button
+        onClick={sendOrder}
+        className="bg-green-500 px-6 py-3 rounded"
+      >
+        Order via WhatsApp
+      </button>
+    </main>
+  );
+}
           {server.packages.map(
             (item, index) => (
               <Link
