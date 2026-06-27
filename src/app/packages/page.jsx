@@ -1,46 +1,36 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { indiaPackages } from "@/data/indiaPackages";
+import { Packages } from "@/data/Packages";
 
-export default function Packages() {
-  const router = useRouter();
-
+export default function PackagesPage() {
   return (
     <main className="min-h-screen bg-black text-white p-6">
-      <h1 className="text-4xl font-bold text-cyan-400 text-center mb-8">
-        Packages
+      <h1 className="text-5xl font-bold text-center text-cyan-400 mb-10">
+        MLBB Packages
       </h1>
 
-      <div className="grid md:grid-cols-2 gap-4">
-        {indiaPackages.map((pkg, index) => (
-          <div
-            key={index}
-            className="bg-gray-900 border border-cyan-500 rounded-xl p-4"
-          >
-            <h2 className="text-xl font-bold">
-              {pkg.name}
-            </h2>
+      {Object.entries(Packages).map(([key, server]) => (
+        <div
+          key={key}
+          className="mb-10 bg-gray-900 p-6 rounded-2xl border border-cyan-500"
+        >
+          <h2 className="text-3xl font-bold text-cyan-300 mb-5">
+            {server.name}
+          </h2>
 
-            <p className="text-green-400 mt-2">
-              {pkg.price}
-            </p>
-
-            <button
-              onClick={() =>
-                router.push(
-                  `/checkout?package=${encodeURIComponent(
-                    pkg.name
-                  )}&price=${encodeURIComponent(pkg.price)}`
-                )
-              }
-              className="w-full mt-4 bg-cyan-500 py-2 rounded-xl"
-            >
-              Buy Now
-            </button>
+          <div className="grid md:grid-cols-3 gap-4">
+            {server.packages.map((pkg, index) => (
+              <div
+                key={index}
+                className="bg-black p-4 rounded-xl border border-gray-700"
+              >
+                <h3 className="font-bold">{pkg.product}</h3>
+                <p className="text-green-400">{pkg.price}</p>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </main>
   );
 }
