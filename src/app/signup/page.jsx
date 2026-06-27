@@ -17,12 +17,22 @@ export default function Signup() {
 
   const handleSignup = () => {
     if (
-      !username ||
-      !email ||
-      !password ||
-      !confirmPassword
+      !username.trim() ||
+      !email.trim() ||
+      !password.trim() ||
+      !confirmPassword.trim()
     ) {
       alert("Please fill all fields");
+      return;
+    }
+
+    if (!email.includes("@")) {
+      alert("Enter a valid email");
+      return;
+    }
+
+    if (password.length < 6) {
+      alert("Password must be at least 6 characters");
       return;
     }
 
@@ -35,6 +45,7 @@ export default function Signup() {
       username,
       email,
       password,
+      createdAt: new Date().toISOString(),
     };
 
     localStorage.setItem(
@@ -47,24 +58,21 @@ export default function Signup() {
       "true"
     );
 
-    alert("Account Created Successfully!");
+    alert("Account Created Successfully ✅");
 
     router.push("/");
   };
 
   return (
     <main
-      className="relative min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat px-4"
+      className="relative min-h-screen flex items-center justify-center bg-cover bg-center px-4"
       style={{
-        backgroundImage:
-          "url('/signup-bg.jpg')",
+        backgroundImage: "url('/signup-bg.jpg')",
       }}
     >
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/60" />
+      <div className="absolute inset-0 bg-black/70"></div>
 
-      {/* Card */}
-      <div className="relative z-10 w-full max-w-md bg-black/60 backdrop-blur-lg border border-pink-500 rounded-3xl p-8 text-white shadow-2xl">
+      <div className="relative z-10 w-full max-w-md bg-black/60 backdrop-blur-lg border border-pink-500 rounded-3xl p-8 text-white">
 
         <h1 className="text-4xl font-bold text-center text-pink-400">
           CREATE ACCOUNT
@@ -95,11 +103,7 @@ export default function Signup() {
         />
 
         <input
-          type={
-            showPassword
-              ? "text"
-              : "password"
-          }
+          type={showPassword ? "text" : "password"}
           placeholder="Password"
           value={password}
           onChange={(e) =>
@@ -109,28 +113,20 @@ export default function Signup() {
         />
 
         <input
-          type={
-            showPassword
-              ? "text"
-              : "password"
-          }
+          type={showPassword ? "text" : "password"}
           placeholder="Confirm Password"
           value={confirmPassword}
           onChange={(e) =>
-            setConfirmPassword(
-              e.target.value
-            )
+            setConfirmPassword(e.target.value)
           }
           className="w-full mt-4 p-3 rounded-xl bg-gray-900 border border-gray-700 focus:border-pink-500 outline-none"
         />
 
         <button
           onClick={() =>
-            setShowPassword(
-              !showPassword
-            )
+            setShowPassword(!showPassword)
           }
-          className="text-sm text-pink-400 mt-2"
+          className="text-pink-400 text-sm mt-2"
         >
           {showPassword
             ? "Hide Password"
@@ -139,7 +135,7 @@ export default function Signup() {
 
         <button
           onClick={handleSignup}
-          className="w-full mt-6 bg-pink-500 hover:bg-pink-600 transition py-3 rounded-xl font-bold"
+          className="w-full mt-6 bg-pink-500 hover:bg-pink-600 py-3 rounded-xl font-bold transition"
         >
           Create Account
         </button>
@@ -157,4 +153,4 @@ export default function Signup() {
       </div>
     </main>
   );
-}
+        }
