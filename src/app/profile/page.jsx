@@ -6,21 +6,28 @@ import { useRouter } from "next/navigation";
 export default function Profile() {
   const router = useRouter();
 
-  const [user, setUser] =
-    useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const data = JSON.parse(
-      localStorage.getItem("user")
-    );
+    try {
+      const isLoggedIn =
+        localStorage.getItem("loggedIn");
 
-    if (!data) {
+      const data = JSON.parse(
+        localStorage.getItem("user")
+      );
+
+      if (!isLoggedIn || !data) {
+        router.push("/login");
+        return;
+      }
+
+      setUser(data);
+    } catch (error) {
+      console.error(error);
       router.push("/login");
-      return;
     }
-
-    setUser(data);
-  }, []);
+  }, [router]);
 
   const logout = () => {
     localStorage.removeItem("loggedIn");
@@ -32,14 +39,16 @@ export default function Profile() {
 
   return (
     <main
-      className="min-h-screen bg-cover bg-center flex items-center justify-center"
+      className="relative min-h-screen bg-cover bg-center flex items-center justify-center px-4"
       style={{
         backgroundImage:
           "url('/profile-bg.jpg')",
       }}
     >
-      <div className="absolute inset-0 bg-black/70"></div>
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/70" />
 
+      {/* Card */}
       <div className="relative z-10 w-full max-w-md bg-black/60 backdrop-blur-md border border-cyan-500 rounded-3xl p-8 text-white">
 
         <div className="text-center">
@@ -47,7 +56,7 @@ export default function Profile() {
           <img
             src="/avatar.png"
             alt="Profile"
-            className="w-28 h-28 rounded-full mx-auto border-4 border-cyan-500"
+            className="w-28 h-28 rounded-full mx-auto border-4 border-cyan-500 object-cover"
           />
 
           <h1 className="text-3xl font-bold mt-4">
@@ -77,7 +86,7 @@ export default function Profile() {
               Email
             </p>
 
-            <p className="font-bold">
+            <p className="font-bold break-all">
               {user.email}
             </p>
           </div>
@@ -86,7 +95,7 @@ export default function Profile() {
 
         <button
           onClick={logout}
-          className="w-full mt-6 bg-red-500 hover:bg-red-600 py-3 rounded-xl font-bold"
+          className="w-full mt-6 bg-red-500 hover:bg-red-600 transition py-3 rounded-xl font-bold"
         >
           Logout
         </button>
@@ -94,4 +103,4 @@ export default function Profile() {
       </div>
     </main>
   );
-}
+      }
