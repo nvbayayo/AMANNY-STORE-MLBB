@@ -42,9 +42,15 @@ const servers = [
 
 export default function Servers() {
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main
+      className="relative min-h-screen bg-cover bg-center text-white"
+      style={{
+        backgroundImage: "url('/servers-bg.jpg')",
+      }}
+    >
+      <div className="absolute inset-0 bg-black/70" />
 
-      <div className="max-w-7xl mx-auto p-6">
+      <div className="relative z-10 max-w-7xl mx-auto p-6">
 
         <h1 className="text-5xl font-bold text-center text-cyan-400 mb-12">
           SELECT SERVER
@@ -56,23 +62,21 @@ export default function Servers() {
             <Link
               key={index}
               href={server.link}
-              className={`bg-gray-900 p-8 rounded-3xl border ${server.color} hover:scale-105 transition`}
+              className={`bg-gray-900/70 backdrop-blur-md p-8 rounded-3xl border ${server.color} hover:scale-105 transition duration-300`}
             >
               <h2 className="text-2xl font-bold text-center">
                 {server.name}
               </h2>
 
-              <button className="w-full mt-6 bg-cyan-500 py-3 rounded-xl font-bold">
+              <button className="w-full mt-6 bg-cyan-500 hover:bg-cyan-600 py-3 rounded-xl font-bold">
                 Open
               </button>
-
             </Link>
           ))}
 
         </div>
 
       </div>
-
     </main>
   );
 }
