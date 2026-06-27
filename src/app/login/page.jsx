@@ -7,35 +7,36 @@ import { useState } from "react";
 export default function Login() {
   const router = useRouter();
 
-  const [username, setUsername] =
-    useState("");
-
-  const [password, setPassword] =
-    useState("");
-
-  const [showPassword, setShowPassword] =
-    useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const login = () => {
-    const user = JSON.parse(
-      localStorage.getItem("user")
-    );
-
-    if (
-      user &&
-      user.username === username &&
-      user.password === password
-    ) {
-      localStorage.setItem(
-        "loggedIn",
-        "true"
+    try {
+      const user = JSON.parse(
+        localStorage.getItem("user")
       );
 
-      alert("Login Successful!");
+      if (
+        user &&
+        user.username === username.trim() &&
+        user.password === password
+      ) {
+        localStorage.setItem(
+          "loggedIn",
+          "true"
+        );
 
-      router.push("/");
-    } else {
-      alert("Invalid Username or Password");
+        alert("Login Successful!");
+        router.push("/");
+      } else {
+        alert(
+          "Invalid Username or Password"
+        );
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Login Error");
     }
   };
 
@@ -47,10 +48,8 @@ export default function Login() {
           "url('/login-bg.jpg')",
       }}
     >
-      {/* Overlay */}
       <div className="absolute inset-0 bg-black/60" />
 
-      {/* Login Card */}
       <div className="relative z-10 w-full max-w-md bg-black/60 backdrop-blur-lg border border-cyan-500 rounded-3xl p-8 text-white shadow-2xl">
 
         <h1 className="text-4xl font-bold text-center text-cyan-400">
@@ -87,9 +86,7 @@ export default function Login() {
 
         <button
           onClick={() =>
-            setShowPassword(
-              !showPassword
-            )
+            setShowPassword(!showPassword)
           }
           className="text-cyan-400 text-sm mt-2"
         >
